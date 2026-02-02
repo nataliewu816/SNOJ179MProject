@@ -1,0 +1,13 @@
+# Secrets
+.env
+
+# Large files
+models/*.pt
+data/database.db
+data/logs/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+```
