@@ -1,5 +1,5 @@
 # Secrets
-.env
+.venv311
 
 # Large files
 models/*.pt
@@ -9,5 +9,4 @@ data/logs/
 # Python
 __pycache__/
 *.pyc
-.venv/
-```
+venv311/
