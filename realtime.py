@@ -17,6 +17,9 @@ class LatestFrameGrabber:
         if not self.cap.isOpened():
             raise RuntimeError(f"Could not open video source: {source}")
 
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+
         self.lock = threading.Lock()
         self.frame = None
         self.ok = True
@@ -58,14 +61,14 @@ def draw_bbox(img, bbox, label: str = "", thickness: int = 2):
 
 
 def main():
-    VEHICLE_MODEL = "models/vehicle/vehicle_detect_model.pt"
-    PLATE_MODEL = "models/plates/plate_detect_model.pt"
+    VEHICLE_MODEL = "models/vehicle/vehicle_detect_model_ncnn_model"
+    PLATE_MODEL = "models/plates/plate_detect_model_ncnn_model"
 
     vehicle_detector = VehicleDetector(
         model_path=VEHICLE_MODEL,
         conf=0.70,
         iou=0.5,
-        imgsz=640,
+        imgsz=320,
     )
 
     plate_detector = PlateDetector(
@@ -87,7 +90,7 @@ def main():
     # Performance caps
     MAX_VEHICLES_PER_FRAME = 5
     MIN_VEHICLE_AREA = 8000  # skip tiny far vehicles
-    SHOW_PLATE_CROPS = True  # set False if it slows you down
+    SHOW_PLATE_CROPS = False  # set False if it slows you down
 
     try:
         while True:
@@ -165,6 +168,8 @@ def main():
                 # show up to 4 crops
                 for i, crop in enumerate(plate_crops[:4]):
                     cv2.imshow(f"PlateCrop{i}", crop)
+
+            cv2.imshow("Parking Vision - Real-time Test", frame)
 
             key = cv2.waitKey(1) & 0xFF
             if key == ord("q") or key == 27:  # q or ESC
