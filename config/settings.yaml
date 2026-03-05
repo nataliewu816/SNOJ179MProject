@@ -14,7 +14,7 @@ tracking:
   max_age: 30 
 
 spaces:
-  config: config/parking_space.json
+  config: config/parking_spaces.json
 
 alerts:
   enabled: true

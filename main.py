@@ -1,16 +1,11 @@
-from src.detector import VehicleDetector
 from src.tracker import VehicleTracker
 from src.space_manager import SpaceManager
-from src.plate_matcher import PlateMatcher
-from src.database import VehicleDatabase
-from src.visualizer import Visualizer
-from src.alerts import AlertManager
 
 import yaml
 import os
-from dotenv import load_dotenv
 import re
 import cv2
+from dotenv import load_dotenv
 
 
 def load_config(path):
@@ -28,6 +23,7 @@ def load_config(path):
 
     return yaml.safe_load(expanded_content)
 
+
 def main():
     load_dotenv()
 
@@ -35,7 +31,8 @@ def main():
         config = load_config('config/settings.yaml')
         print("Config loaded successfully!")
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"Error loading config: {e}")
+        return
 
     tracker = VehicleTracker(
         model_path=config['detection']['model_path'],
@@ -43,13 +40,42 @@ def main():
         confidence=config['detection']['confidence'],
         fps=config['camera']['fps']
     )
-    plate_matcher = PlateMatcher(config)
-    database = VehicleDatabase('data/database.db')
     space_manager = SpaceManager(config['spaces']['config'])
-    visualizer = Visualizer(space_manager.spaces)
-    alerts = AlertManager(config)
 
     camera = cv2.VideoCapture(config['camera']['source'])
+    if not camera.isOpened():
+        print(f"Error: could not open camera source: {config['camera']['source']}")
+        return
+
+    print("Running — press Q to quit.")
+
+    while True:
+        ok, frame = camera.read()
+        if not ok:
+            print("Camera read failed, exiting.")
+            break
+
+        vehicles = tracker.update(frame)
+        space_manager.update_occupancy(vehicles)
+
+        frame = space_manager.draw_spaces(frame)
+
+        for v in vehicles:
+            x1, y1, x2, y2 = [int(c) for c in v['bbox']]
+            cv2.rectangle(frame, (x1, y1), (x2, y2), (255, 200, 0), 2)
+            cv2.putText(frame, f"{v['class_name']} {v['track_id']}",
+                        (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 200, 0), 1)
+
+        summary = space_manager.get_occupancy_summary()
+        cv2.putText(frame, f"Spaces: {summary['occupied']}/{summary['total']} occupied",
+                    (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
+
+        cv2.imshow('Parking Monitor', frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    camera.release()
+    cv2.destroyAllWindows()
 
 
 if __name__ == '__main__':
