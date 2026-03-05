@@ -6,6 +6,8 @@ models/*.pt
 data/database.db
 data/logs/
 
+parking.db
+
 # Python
 __pycache__/
 *.pyc
