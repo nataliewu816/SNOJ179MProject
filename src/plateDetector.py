@@ -1,15 +1,4 @@
 # src/plate_detector.py
-"""
-A yolov8 plate detector wrapper, designed to be used on car crops (ROIs) for speed/accuracy.
-
-Designed to match the VehicleDetector wrapper style:
-- Hide Ultralytics Results objects
-- Return standardized detections: bbox (xyxy pixel coords), conf, cls
-- Intended to run on a CAR CROP (ROI) for speed/accuracy:
-      plate_dets = plate_detector.detect(car_crop_bgr)
-
-later we need to implement a hailo backend doing the samething
-"""
 
 from __future__ import annotations
 
@@ -46,21 +35,13 @@ def _clamp_bbox_xyxy(b: BBox, w: int, h: int) -> Optional[BBox]:
 
 
 class PlateDetector:
-    """
-    Wrapper around an Ultralytics YOLO bbox model trained for license plates.
-
-    Returns:
-        List[PlateDet] in pixel coords relative to the *input image*.
-        If you pass a car crop, bboxes are relative to that crop (ROI coords).
-    """
-
     def __init__(
         self,
         model_path: str,
         conf: float = 0.30,
         iou: float = 0.5,
         classes: Optional[Sequence[int]] = None,
-        imgsz: Union[int, Tuple[int, int]] = 416,
+        imgsz: Union[int, Tuple[int, int]] = 320,
         device: Optional[Union[int, str]] = None,
         half: bool = False,
         max_det: int = 50,
@@ -69,7 +50,6 @@ class PlateDetector:
     ) -> None:
         if YOLO is None:
             raise ImportError(
-                "Ultralytics is not installed. Install with: pip install ultralytics"
             )
 
         self.model = YOLO(model_path)
@@ -84,15 +64,7 @@ class PlateDetector:
         self.verbose = bool(verbose)
 
     def detect(self, image_bgr: np.ndarray) -> List[PlateDet]:
-        """
-        Run plate detection on a single image (typically a car ROI crop).
 
-        Args:
-            image_bgr: np.ndarray (H, W, 3) uint8
-
-        Returns:
-            List[PlateDet] with bbox coords relative to the given image.
-        """
         if image_bgr is None or not isinstance(image_bgr, np.ndarray):
             raise TypeError("image_bgr must be a numpy ndarray.")
         if image_bgr.ndim != 3 or image_bgr.shape[2] != 3:
