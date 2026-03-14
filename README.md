@@ -3,10 +3,20 @@
 Real-time license plate detection and OCR running entirely on the edge using a Raspberry Pi 5 with AI acceleration.
 
 ## **Demo**
-[![team JSON's License Plate Recognition] ]https://youtu.be/jM9ZgLdmsQY
+[![] ]https://youtu.be/jM9ZgLdmsQY
 
-##Tech Stack
-## Tech Stack
+
+## **Installation**
+''bash
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+
+pip install -r requirements.txt
+
+python main.py
+''
+
+## **Tech Stack**
 
 | Component | Technology |
 |-----------|------------|
@@ -17,9 +27,17 @@ Real-time license plate detection and OCR running entirely on the edge using a R
 | Containerization | [Docker](https://www.docker.com/) |
 
 
-##**Hardware Requirements**
+## **Hardware Requirements**
 Raspberry Pi 5 (8GB recommended)
-Raspberry Pi AI HAT+ (Hailo-8L NPU)
-Raspberry Pi Camera Module (v2 or v3)
-MicroSD card (32GB+)
-Power supply (5V/5A USB-C)
+- Raspberry Pi AI HAT+ (Hailo-8L NPU)
+- Raspberry Pi Camera Module (v2 or v3)
+- MicroSD card (32GB+)
+- Power supply (5V/5A USB-C)
+- [NexiGo N60 1080P Webcam](https://www.amazon.com/Microphone-NexiGo-Computer-110-degree-Conferencing/dp/B088TSR6YJ)
+
+## **Contributors**
+- Jerome Guan
+- Natalie Wu
+- Oscar La
+- Sarik Karki
+  
