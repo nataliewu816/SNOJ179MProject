@@ -1,11 +1,32 @@
 from src.tracker import VehicleTracker
 from src.space_manager import SpaceManager
+from src.database import VehicleDatabase
 
 import yaml
 import os
 import re
 import cv2
 from dotenv import load_dotenv
+
+
+def _seed_demo_data(database: VehicleDatabase):
+    """Populate the database with sample vehicles and permits for demo purposes."""
+    vehicles = [
+        ("ABC123", "Alice Smith"),
+        ("XYZ789", "Bob Jones"),
+        ("DEF456", "Carol White"),
+        ("GHI012", "David Brown"),
+    ]
+    for plate, owner in vehicles:
+        database.add_vehicle(plate, owner)
+
+    permits = [
+        ("ABC123", "monthly", "2026-12-31"),
+        ("XYZ789", "daily",   "2026-03-31"),
+        ("DEF456", "monthly", "2026-06-30"),
+    ]
+    for plate, ptype, expiry in permits:
+        database.add_permit(plate, ptype, expiry)
 
 
 def load_config(path):
