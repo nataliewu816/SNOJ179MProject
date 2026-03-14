@@ -35,11 +35,5 @@ Raspberry Pi 5 (8GB recommended)
 - [NexiGo N60 1080P Webcam](https://www.amazon.com/Microphone-NexiGo-Computer-110-degree-Conferencing/dp/B088TSR6YJ)
 
 ## **Pipeline**
-![pipe line image](assets/pipeline.png)
+![pipe line image](assets/pipeline.svg)
 
-## **Contributors**
-- Jerome Guan
-- Natalie Wu
-- Oscar La
-- Sarik Karki
-  
