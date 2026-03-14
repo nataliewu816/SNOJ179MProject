@@ -20,7 +20,7 @@ python main.py
 | Component | Technology |
 |-----------|------------|
 | Language  | Python     |
-| Framework | Detectron2 |
+| Model | YOLOv8s |
 | Hardware  | Hailo-8    |
 |Accelorator| [Hailo-8L (AI HAT+)](https://www.raspberrypi.com/products/ai-hat/)|
 | Containerization | [Docker](https://www.docker.com/) |
@@ -35,7 +35,7 @@ Raspberry Pi 5 (8GB recommended)
 - [NexiGo N60 1080P Webcam](https://www.amazon.com/Microphone-NexiGo-Computer-110-degree-Conferencing/dp/B088TSR6YJ)
 
 ## **Pipeline**
-
+![pipe line image](assets/pipeline.png)
 
 ## **Contributors**
 - Jerome Guan
